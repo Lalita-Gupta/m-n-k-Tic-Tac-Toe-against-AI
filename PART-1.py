@@ -29,9 +29,11 @@ class display:
         
         # display message for first move according to the random int
         if first_player == 0:
-            print("First player is computer.");
+            print("First player is computer. Computer played its move.");
+            print();
         else:
             print("You are the first player.");
+            print();
 
 class checking:
     
@@ -66,7 +68,8 @@ class moves(checking):
         # infinte loop
         while True:
             # taking row and column number as input from the user 
-            i,j = [int(x) for x in input("Enter row number and column number separted by space starting with 0: ").split()];
+            i,j = [int(x) for x in input("\nEnter row number and column number separted by space starting with 0 to make your move: ").split()];
+            print();
             
             # if move made is available and vacant: mark X in the board
             if i < m and j < n and board[i][j] == '_':
@@ -77,9 +80,9 @@ class moves(checking):
             
             # else if index beyong board limit: dispplay invalid
             elif i >= m or j >= n:
-                print("Invalid index of input. Enter again.");
+                print("\nInvalid index of input. Enter again.");
             else:
-                print("Already occupied. Enter again.");
+                print("\nAlready occupied. Enter again.");
                 
     # AI Level 0. The program then places its own mark on a randomly chosen available position.
     def comp_move_level0(self):
@@ -270,188 +273,193 @@ def calculate(i, j, sign, count):
 
 # infinite loop
 while True:
-    print("New Tic-Tac-Toe match begins.") # First message for the player to see
-    m = int(input("Enter the number of rows: ")); # the board with m rows
-    n = int(input("Enter the number of columns: ")); # board with n columns 
-    k = int(input("Enter the length of the sequence of marks arranged horizontally, vertically, or diagonally that constitutes a win: "));
-    l = int(input("Enter the type of AI that they will play against (0,1,2): ")); # level of AI with which user wants to compete
+    print("\nNew Tic-Tac-Toe match begins.") # First message for the player to see
+    m = int(input("\nEnter the number of rows: ")); # the board with m rows
+    n = int(input("\nEnter the number of columns: ")); # board with n columns 
+    k = int(input("\nEnter the length of the sequence of marks arranged horizontally, vertically, or diagonally that constitutes a win: "));
+    l = int(input("\nEnter the type of AI that they will play against (0,1,2): ")); # level of AI with which user wants to compete
     print();
+
+    if k>0 and m>0 and n>0:
     
-    # instance for display class created 
-    d = display();
-    # instance for moves class created 
-    t = moves();
+        # instance for display class created 
+        d = display();
+        # instance for moves class created 
+        t = moves();
 
-    # to store the end result for iether of the player's win or tie 
-    result = "";
+        # to store the end result for iether of the player's win or tie 
+        result = "";
 
-    # board created of m*n dimension
-    board = np.full((m,n), '_');
-    first_player = random.randint(0,1); # random first player 
+        # board created of m*n dimension
+        board = np.full((m,n), '_');
+        first_player = random.randint(0,1); # random first player 
 
-    # if AI level 0 
-    if l == 0:
+        # if AI level 0 
+        if l == 0:
 
-        # calling first_player_message method using object d of display class. Passing the randomly selected first player
-        d.first_player_message(first_player);
+            # calling first_player_message method using object d of display class. Passing the randomly selected first player
+            d.first_player_message(first_player);
 
-        while True:
+            while True:
 
-            # we assign computer first player if the random int is 0
-            if first_player == 0:
+                # we assign computer first player if the random int is 0
+                if first_player == 0:
 
-                # entering computer level 0 method of moves class 
-                result = t.comp_move_level0();
-                
-                d.display_board();
-                
-                # if after making the move and recieving no win or tie message: switch player to user
-                if result == "":
-                    # same as computer: go to user_move method of moves class called using t object
-                    result = t.user_move();
-            
-            # if first player random int 1        
-            elif first_player == 1:
-                
-                # user makes the first move: calls the user_move function of moves class
-                result = t.user_move();
-                # if no declared result: switch player to computer
-                if result == "":
+                    # entering computer level 0 method of moves class 
                     result = t.comp_move_level0();
+                    
                     d.display_board();
                     
-            # after each move: check win and tie
-            # if result is O: declare computer won
-            if result == 'O':
-                print("Computer won this time.");
-                break;
+                    # if after making the move and recieving no win or tie message: switch player to user
+                    if result == "":
+                        # same as computer: go to user_move method of moves class called using t object
+                        result = t.user_move();
                 
-            # if result is X: declare user won
-            elif result == 'X':
-                d.display_board();
-                print("Yayy! You won.");
-                break;
-                
-            # if result is tie: declare match tie
-            elif result == "tie":
-                if first_player == 1:
-                    d.display_board();
-                print("Match Tied.");
-                break;
-                
-    # if AI level 1 selected
-    elif l == 1:
-        
-        # evaluate the first player randomly 
-        d.first_player_message(first_player);
-        
-        # infinite loop
-        while True:
-            # if random int is 0: 
-            if first_player == 0:
-                # if computer has winning move: result is O
-                if t.comp_move_level_1_2('O') == 'O':
-                    result = 'O';
+                # if first player random int 1        
+                elif first_player == 1:
                     
-                # else make the computer move random as AI level 0
-                else:
-                    result = t.comp_move_level0();
-                d.display_board();
-                
-                # if result is '': switch player to user player
-                if result == "":
+                    # user makes the first move: calls the user_move function of moves class
                     result = t.user_move();
+                    # if no declared result: switch player to computer
+                    if result == "":
+                        result = t.comp_move_level0();
+                        d.display_board();
+                        
+                # after each move: check win and tie
+                # if result is O: declare computer won
+                if result == 'O':
+                    print("Computer won this time.");
+                    break;
+                    
+                # if result is X: declare user won
+                elif result == 'X':
+                    d.display_board();
+                    print("Yayy! You won.");
+                    break;
+                    
+                # if result is tie: declare match tie
+                elif result == "tie":
+                    if first_player == 1:
+                        d.display_board();
+                    print("Match Tied.");
+                    break;
+                    
+        # if AI level 1 selected
+        elif l == 1:
             
-            # if random player in 1: user moves first
-            elif first_player == 1:
-                result = t.user_move();
-                # check result: if nothing, go for ai level 1 result checking
-                if result == "":
+            # evaluate the first player randomly 
+            d.first_player_message(first_player);
+            
+            # infinite loop
+            while True:
+                # if random int is 0: 
+                if first_player == 0:
+                    # if computer has winning move: result is O
                     if t.comp_move_level_1_2('O') == 'O':
                         result = 'O';
+                        
+                    # else make the computer move random as AI level 0
                     else:
                         result = t.comp_move_level0();
                     d.display_board();
                     
-            # if result has O: computer won
-            if result == 'O':
-                print("Computer won this time.");
-                break;
+                    # if result is '': switch player to user player
+                    if result == "":
+                        result = t.user_move();
                 
-            # if result has X: user won
-            elif result == 'X':
-                d.display_board();
-                print("Yayy! You won.");
-                break;
-                
-            # if result has tie: match tie
-            elif result == "tie":
-                if first_player == 1:
-                    d.display_board();
-                print("Match Tied.");
-                break;
-                
-    # if AI level 2
-    elif l == 2:
-        
-        # choose first player randomly
-        d.first_player_message(first_player);
-        
-        while True:
-            # if first player is 0: computer plays first
-            if first_player == 0:
-                # if this method returns O: result is ) win
-                if t.comp_move_level_1_2('O') == 'O':
-                    result = 'O';
-                elif t.comp_move_level_1_2('X') == 'X':
-                    pass;
-                # if nothing returned: make random move 
-                else:
-                    result = t.comp_move_level0();
-                d.display_board();
-                
-                # if no reult yet: switch player to user
-                if result == "":
+                # if random player in 1: user moves first
+                elif first_player == 1:
                     result = t.user_move();
+                    # check result: if nothing, go for ai level 1 result checking
+                    if result == "":
+                        if t.comp_move_level_1_2('O') == 'O':
+                            result = 'O';
+                        else:
+                            result = t.comp_move_level0();
+                        d.display_board();
+                        
+                # if result has O: computer won
+                if result == 'O':
+                    print("Computer won this time.");
+                    break;
                     
-            # if first player int is 1: user moves first
-            elif first_player == 1:
-                # execute the user_move method of moves class
-                result = t.user_move();
-                if result == "":
+                # if result has X: user won
+                elif result == 'X':
+                    d.display_board();
+                    print("Yayy! You won.");
+                    break;
+                    
+                # if result has tie: match tie
+                elif result == "tie":
+                    if first_player == 1:
+                        d.display_board();
+                    print("Match Tied.");
+                    break;
+                    
+        # if AI level 2
+        elif l == 2:
+            
+            # choose first player randomly
+            d.first_player_message(first_player);
+            
+            while True:
+                # if first player is 0: computer plays first
+                if first_player == 0:
+                    # if this method returns O: result is ) win
                     if t.comp_move_level_1_2('O') == 'O':
                         result = 'O';
                     elif t.comp_move_level_1_2('X') == 'X':
                         pass;
+                    # if nothing returned: make random move 
                     else:
                         result = t.comp_move_level0();
                     d.display_board();
-            
-            # if result is O: computer won
-            if result == 'O':
-                print("Computer won this time.");
-                break;
+                    
+                    # if no reult yet: switch player to user
+                    if result == "":
+                        result = t.user_move();
+                        
+                # if first player int is 1: user moves first
+                elif first_player == 1:
+                    # execute the user_move method of moves class
+                    result = t.user_move();
+                    if result == "":
+                        if t.comp_move_level_1_2('O') == 'O':
+                            result = 'O';
+                        elif t.comp_move_level_1_2('X') == 'X':
+                            pass;
+                        else:
+                            result = t.comp_move_level0();
+                        d.display_board();
                 
-            # if result is X: user won
-            elif result == 'X':
-                d.display_board();
-                print("Yayy! You won.");
-                break;
-            # if tie: match tie
-            elif result == "tie":
-                if first_player == 1:
+                # if result is O: computer won
+                if result == 'O':
+                    print("Computer won this time.");
+                    break;
+                    
+                # if result is X: user won
+                elif result == 'X':
                     d.display_board();
-                print("Match Tied.");
-                break;
+                    print("Yayy! You won.");
+                    break;
+                # if tie: match tie
+                elif result == "tie":
+                    if first_player == 1:
+                        d.display_board();
+                    print("Match Tied.");
+                    break;
+        
+        # if any other level except 0, 1 and 2: invalid level
+        else:
+            print("\nInvalid Level. Enter 0 or 1 or 2 corresponding to level you want to play against.");
     
-    # if any other level except 0, 1 and 2: invalid level
     else:
-        print("Invalid Level.");
+        print("\nInvalid input. Chose number of rows, columns and length above 0.")
         
     # replay
-    c = input("Wanna play again? Enter 'Y' or 'y' to play again, or anything else to quit: ");
+    c = input("\nWanna play again? Enter 'Y' or 'y' to play again, or anything else to quit: ");
     if c != 'Y' and c != 'y':
-        print("Bye!");
+        print("\nBye!\n");
         break;
     print();
     
